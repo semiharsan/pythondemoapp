@@ -3,7 +3,6 @@ We will deploy a simple python app on kubernetes cluster which is installed on L
 1. Create a hello.py file 
 
 nano hello.py
-# hello.py file
 #====================START==========================================#
 from flask import Flask
 
@@ -20,39 +19,37 @@ if __name__ == "__main__":
 2. Create a Dockerfile
 
 nano Dockerfile
-# Dockerfile file
 #====================START==========================================#
 FROM python:slim-buster
 
-# Declaring working directory in our container and change user
+#= Declaring working directory in our container and change user
 WORKDIR /opt/apps
 
 #Add a new user and change to that for python security consideration
 RUN adduser appuser && chown -R appuser /opt/apps
 USER appuser
 
-# Copy all relevant files to our working dir /opt/apps
+#= Copy all relevant files to our working dir /opt/apps
 COPY app/. .
 
-# If you need you can install all requirements for our app with requirements.txt file
+#= If you need you can install all requirements for our app with requirements.txt file
 RUN python3 -m pip install -r requirements.txt
 
-# Add pip scripts installation directory as path environment
+#= Add pip scripts installation directory as path environment
 RUN export PATH="$HOME/appuser/.local/bin:$PATH"
 
-# As optional you can upgrade pip script to latest version.
+#= As optional you can upgrade pip script to latest version.
 RUN python3 -m pip install --upgrade pip
 
 EXPOSE 8000
 
-# Run the application
+#= Run the application
 CMD [ "python3", "/opt/apps/hello.py" ]
 #====================END==========================================#
 
 3. Create hellopython.yml file and change "WriteHereYourDockerhubAccount" with your own docker hub account
 
 nano hellopython.yml
-# hellopython.yml file
 #====================START==========================================#
 apiVersion: apps/v1
 kind: Deployment
@@ -100,7 +97,7 @@ spec:
 4. Create requirements.txt file for python pip module
 
 nano requirements.txt
-# requirements.txt file
+#= requirements.txt file
 #====================START==========================================#
 Flask==1.1.2
 #====================END==========================================#
@@ -111,7 +108,7 @@ Flask==1.1.2
 docker login 
 
 nano hellopython-shell.sh
-# Please change "WriteHereYourDockerhubAccount" with your own docker hub account in hellopython-shell.sh file
+#= Please change "WriteHereYourDockerhubAccount" with your own docker hub account in hellopython-shell.sh file
 #====================START==========================================#
 #!/bin/bash
 mkdir ~/hellopyhton
