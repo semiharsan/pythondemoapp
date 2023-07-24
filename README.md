@@ -4,7 +4,7 @@ We will deploy a simple python app on kubernetes cluster which is installed on L
 
 nano hello.py
 # hello.py file
-#====================START==========================================
+#====================START==========================================#
 from flask import Flask
 
 app = Flask(__name__)
@@ -15,13 +15,13 @@ def index():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000, debug=True)
-#====================END==========================================
+#====================END==========================================#
 
 2. Create a Dockerfile
 
 nano Dockerfile
 # Dockerfile file
-#====================START==========================================
+#====================START==========================================#
 FROM python:slim-buster
 
 # Declaring working directory in our container and change user
@@ -47,13 +47,13 @@ EXPOSE 8000
 
 # Run the application
 CMD [ "python3", "/opt/apps/hello.py" ]
-#====================END==========================================
+#====================END==========================================#
 
 3. Create hellopython.yml file and change "WriteHereYourDockerhubAccount" with your own docker hub account
 
 nano hellopython.yml
 # hellopython.yml file
-#====================START==========================================
+#====================START==========================================#
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -95,15 +95,15 @@ spec:
     - port: 8000
       targetPort: 8000
       nodePort: 31700
-#====================END==========================================
+#====================END==========================================#
 
 4. Create requirements.txt file for python pip module
 
 nano requirements.txt
 # requirements.txt file
-#====================START==========================================
+#====================START==========================================#
 Flask==1.1.2
-#====================END==========================================
+#====================END==========================================#
 
 5. Create shell script to create docker image and kubernetes deployments automatically
 
@@ -112,7 +112,7 @@ docker login
 
 nano hellopython-shell.sh
 # Please change "WriteHereYourDockerhubAccount" with your own docker hub account in hellopython-shell.sh file
-#====================START==========================================
+#====================START==========================================#
 #!/bin/bash
 mkdir ~/hellopyhton
 cp * ~/hellopyhton
@@ -123,7 +123,7 @@ docker build -t hellopython .
 docker tag hellopython WriteHereYourDockerhubAccount/hellopython:v1
 docker push WriteHereYourDockerhubAccount/hellopython:v1
 kubectl apply -f hellopython.yml
-#====================END==========================================
+#====================END==========================================#
 
 6. Change script to executable file.
 
