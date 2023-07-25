@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: hellopython
-        image: Write_Here_YourDockerhub_Or_AWSECR_Account/hellopython:v1
+        image: 527410021310.dkr.ecr.eu-west-2.amazonaws.com/arsit-ecr-repo:pythonapp
         imagePullPolicy: Always
         ports:
         - containerPort: 8000
