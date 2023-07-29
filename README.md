@@ -130,7 +130,7 @@ chmod u+x hellopython-shell.sh
 
 sed -i -e 's/\r$//' hellopython-shell.sh
 
-8. Run the script 
+8. Run the script to deploy your application
 
 ./hellopython-shell.sh
 
