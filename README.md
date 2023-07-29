@@ -134,4 +134,4 @@ sed -i -e 's/\r$//' hellopython-shell.sh
 
 ./hellopython-shell.sh
 
-Congrats !!!
+Congrats !!! You have published a python app on Kubernetes Cluster.
