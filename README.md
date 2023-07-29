@@ -1,4 +1,4 @@
-We will deploy a simple python app on kubernetes cluster which is installed on Linux Server virtual machine. 
+This steps are for deploying a simple python app on kubernetes cluster which is installed on Linux Server virtual machine. 
 
 1. Create a hello.py file 
 
