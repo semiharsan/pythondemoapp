@@ -36,6 +36,6 @@ spec:
     app: hellopython
   type: LoadBalancer
   ports:
-    - port: 8000
+    - port: 31700
       targetPort: 8000
       nodePort: 31700
