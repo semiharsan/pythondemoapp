@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: hellopython
-        image: 527410021310.dkr.ecr.eu-west-2.amazonaws.com/arsit-ecr-repo:pythonapp
+        image: semiharsan/pythonapp:v10
         imagePullPolicy: Always
         ports:
         - containerPort: 8000
