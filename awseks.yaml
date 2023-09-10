@@ -21,10 +21,10 @@ spec:
     spec:
       containers:
       - name: hellopython
-        image: 527410021310.dkr.ecr.eu-west-2.amazonaws.com/arsit-ecr-repo:pythonapp
+        image: ${image_name}
         imagePullPolicy: Always
         ports:
-        - containerPort: 8000
+        - containerPort: ${container_port}
 ---
 apiVersion: v1
 kind: Service
@@ -38,8 +38,8 @@ spec:
     app: hellopython
   type: ClusterIP
   ports:
-    - port: 80
-      targetPort: 8000
+    - port: ${public_port}
+      targetPort: 8000    #if you want to change this, remember to change in docker file expose port as well
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -59,7 +59,7 @@ spec:
               service:
                 name: hellopython-service
                 port:
-                  number: 80
+                  number: ${public_port}
   tls:
     - hosts:
         - pythondemo.arsit.tech
