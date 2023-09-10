@@ -18,8 +18,6 @@ COPY app/. .
 
 # If you need you can install all requirements for our app with requirements.txt file
 RUN python3 -m pip install -r requirements.txt
-USER root
-RUN apt-get update && apt-get install -y curl net-tools telnet
 
 EXPOSE 8000
 
