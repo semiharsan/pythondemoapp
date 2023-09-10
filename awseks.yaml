@@ -24,7 +24,7 @@ spec:
         image: ${image_name}
         imagePullPolicy: Always
         ports:
-        - containerPort: ${container_port}
+        - containerPort: 8000    #if you want to change this, remember to change in docker file expose port as well
 ---
 apiVersion: v1
 kind: Service
