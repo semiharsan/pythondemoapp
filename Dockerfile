@@ -1,23 +1,29 @@
 FROM python:slim-buster
 
-# Declaring working directory in our container and change user
+# Create a non-root user to run the application
+RUN adduser --system appuser
+
+# Declaring working directory in our container
 WORKDIR /opt/apps
 
-#Add a new user and change to that for python security consideration
-RUN adduser appuser && chown -R appuser /opt/apps
-USER appuser
-
-# Add pip scripts installation directory as path environment
+# Add pip scripts installation directory as a path environment
 ENV PATH=$PATH:/home/appuser/.local/bin
 
-# As optional you can upgrade pip script to latest version.
-RUN python3 -m pip install --upgrade pip
+# Copy the requirements file first to leverage Docker caching
+COPY app/requirements.txt .
 
-# Copy all relevant files to our working dir /opt/apps
-COPY app/. .
+# Install the dependencies
+RUN python3 -m pip install --upgrade pip && \
+    python3 -m pip install -r requirements.txt
 
-# If you need you can install all requirements for our app with requirements.txt file
-RUN python3 -m pip install -r requirements.txt
+# Copy the rest of the application code
+COPY app/ .
+
+# Change the ownership of the working directory to the appuser
+RUN chown -R appuser:appuser /opt/apps
+
+# Switch to the non-root user
+USER appuser
 
 EXPOSE 8000
 
