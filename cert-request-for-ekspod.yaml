@@ -6,7 +6,7 @@ metadata:
   namespace: cert-manager
 type: Opaque
 stringData:
-  api-key: ${cloudflare_api_key}
+  api-key: ${CLOUDFLARE_API_KEY}
 #########################Cluster Cert Issuer###############################
 ---
 apiVersion: cert-manager.io/v1
@@ -16,30 +16,30 @@ metadata:
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
-    email: ${cloudflare_email}
+    email: ${CLOUDFLARE_EMAIL}
     privateKeySecretRef:
       name: letsencrypt-prod-account-key
     solvers:
       - dns01:
           cloudflare:
-            email: ${cloudflare_email}
+            email: ${CLOUDFLARE_EMAIL}
             apiKeySecretRef:
               name: cloudflare-api-key-secret
               key: api-key
         selector:
           dnsNames:
-            - ${dnsName}
+            - ${DOMAINNAME}
 #########################Certificate Request###############################
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: arsit-cert
+  name: ${CERT_NAME}
 spec:
-  secretName: arsit-tls
+  secretName: ${CERT_SECRET_NAME}
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
-  commonName: ${dnsName}
+  commonName: ${DOMAINNAME}
   dnsNames:
-    - ${dnsName}
+    - ${DOMAINNAME}
