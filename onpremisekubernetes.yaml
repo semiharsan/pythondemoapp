@@ -1,11 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hellopython
+  name: ${DEPLOYMENT_NAME}
+  namespace: ${NAMESPACE}
 spec:
   selector:
     matchLabels:
-      app: hellopython
+      app: ${DEPLOYMENT_NAME}
   replicas: 2
   strategy:
     type: RollingUpdate
@@ -16,11 +17,11 @@ spec:
   template:
     metadata:
       labels:
-        app: hellopython
+        app: ${DEPLOYMENT_NAME}
     spec:
       containers:
-      - name: hellopython
-        image: semiharsan/pythonapp:v10
+      - name: ${DEPLOYMENT_NAME}
+        image: ${IMAGE_NAME}
         imagePullPolicy: Always
         ports:
         - containerPort: 8000
@@ -28,14 +29,38 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: hellopython-service
+  name: ${DEPLOYMENT_NAME}-service
+  namespace: ${NAMESPACE}
   labels:
-    app: hellopython
+    app: ${DEPLOYMENT_NAME}
 spec:
   selector:
-    app: hellopython
-  type: LoadBalancer
+    app: ${DEPLOYMENT_NAME}
+  type: ClusterIP
   ports:
-    - port: 8000
+    - port: ${PUBLIC_PORT}
       targetPort: 8000
-      nodePort: 31700
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ${DEPLOYMENT_NAME}-ingress-app
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: ${HOSTNAME}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ${DEPLOYMENT_NAME}-service
+                port:
+                  number: ${PUBLIC_PORT}
+  tls:
+    - hosts:
+        - ${HOSTNAME}
+      secretName: ${CERT_SECRET_NAME}
