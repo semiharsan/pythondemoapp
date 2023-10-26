@@ -7,7 +7,7 @@ spec:
   selector:
     matchLabels:
       app: ${DEPLOYMENT_NAME}
-  replicas: 2
+  replicas: ${REPLICACOUNT}
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -47,6 +47,17 @@ metadata:
   name: ${DEPLOYMENT_NAME}-ingress-app
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.org/proxy-connect-timeout: "30s"
+    nginx.org/proxy-read-timeout: "20s"
+    nginx.org/client-max-body-size: "4m"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      add_header X-Frame-Options "SAMEORIGIN" always;
+      add_header X-Xss-Protection "1; mode=block";
+      add_header Strict-Transport-Security 'max-age=31536000; includeSubDomains; preload';
+      add_header X-Content-Type-Options nosniff;
+      add_header Content-Security-Policy "frame-src * data:; font-src * data:; img-src * data:; connect-src *";
+      add_header Permissions-Policy "geolocation=*,midi=*,sync-xhr=*,microphone=*,camera=*,magnetometer=*,gyroscope=*,fullscreen=*,payment=*";
+      add_header Referrer-Policy "strict-origin";
 spec:
   ingressClassName: nginx
   rules:
