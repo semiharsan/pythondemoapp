@@ -7,7 +7,7 @@ spec:
   selector:
     matchLabels:
       app: ${DEPLOYMENT_NAME}
-  replicas: ${REPLICACOUNT}
+  replicas: ${DEPLOYMENTREPLICA}
   strategy:
     type: RollingUpdate
     rollingUpdate:
